@@ -1,4 +1,5 @@
 from importlib import import_module
+from concurrent import futures
 import requests
 import asyncio
 from time import sleep
@@ -13,6 +14,22 @@ def sendDiscord(webhook_url, content: dict):
         "Content-Type": "application/json",
     })
     return response
+
+def runModule(m: dict):
+    module = import_module("module." + m["module"])
+    status, data = asyncio.run(module.main(*m["args"]))
+
+    if not status: return
+
+    for i in data:
+        try:
+            response = sendDiscord(m["webhook"], i)
+            print(timeStr, response)
+            sleep(3)
+        except Exception as e:
+            print(timeStr, e)
+            sleep(60)
+
 
 if not os.path.isfile("data.json"):
     with open("data.json", "w", encoding="utf-8") as f:
@@ -33,24 +50,13 @@ while True:
     now = datetime.datetime.now()
     timeStr = now.isoformat(" ", timespec="seconds")
 
-    for m in modules:
-
-        module = import_module("module." + m["module"])
-        status, data = asyncio.run(module.main(*m["args"]))
-
-        if not status: continue
-        
-        for i in data:
-            try:
-                response = sendDiscord(m["webhook"], i)
-                print(timeStr, response)
-                sleep(3)
-            except Exception as e:
-                print(timeStr, e)
-                sleep(60)
-
-        #sleep(10)
+    future_list = []
+    with futures.ThreadPoolExecutor(max_workers=len(modules)) as executor:
+        for m in modules:
+            future = executor.submit(runModule, m)
+            future_list.append(future)
+        _ = futures.as_completed(fs=future_list)
 
     print(f'last checked: {timeStr}      ', end="\r")
-    
+
     sleep(60)
