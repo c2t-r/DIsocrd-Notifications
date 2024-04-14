@@ -1,8 +1,8 @@
 [
     {
-        "name": "manwaka_3",
+        "name": "fortune_teller",
         "enabled": true,
-        "module": "manga_fgo3",
+        "module": "fortune",
         "args": [],
         "webhook": "https://discord.com/api/webhooks/YOUR_WEBHOOK_URL"
     }
