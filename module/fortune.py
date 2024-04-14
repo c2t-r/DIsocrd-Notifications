@@ -12,16 +12,17 @@ async def main() -> tuple[bool, list[dict]]:
     response = requests.get(url)
 
     obj = response.json()
+    day = obj["day_of_year"]
 
     data = util.load(name)
     if not data:
         data = {"latest": 0}
         util.save(name, data)
 
-    if obj["unixtime"] == data["latest"]:
+    if day == data["latest"]:
         return False, None
 
-    data["latest"] = obj["unixtime"]
+    data["latest"] = day
     util.save(name, data)
 
     if random() > 0.7: # 30% lucky
@@ -31,7 +32,7 @@ async def main() -> tuple[bool, list[dict]]:
         luck = "unlucky..."
         color = 0x0000FF
 
-    suffix = suffixes[int(str(obj["day_of_year"])[-1])]
+    suffix = suffixes[int(str(day)[-1])]
 
     data = {
         "username": "certain fortune teller",
@@ -40,7 +41,8 @@ async def main() -> tuple[bool, list[dict]]:
             {
                 "color": color,
                 "title": "Today is...",
-                "description": f'{obj["day_of_year"]}{suffix} of this year. Your luck today is ||{luck}||'
+                "description": f'{day}{suffix} of this year! Your luck today is ||{luck}||',
+                "timestamp": obj["datetime"]
             }
         ]
     }

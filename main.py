@@ -55,7 +55,7 @@ while True:
         for m in modules:
             future = executor.submit(runModule, m)
             future_list.append(future)
-        _ = futures.as_completed(fs=future_list)
+        _ = futures.as_completed(future_list)
 
     print(f'last checked: {timeStr}      ', end="\r")
 
