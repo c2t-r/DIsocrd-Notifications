@@ -1,4 +1,4 @@
-# DIsocrd-Notifications
+# Discord-Notifications
 a sample code to create a simple notification bot for discord  
 
 ## How to run
@@ -16,10 +16,10 @@ note: do not edit `data.json` by yourself. it will be generated automatically.
 ```json
 [
     {
-        "name": "manwaka_3",           // just a name to manage modules
-        "enabled": true,               // if this module is enabled
-        "module": "manga_fgo3",        // the module name (file name)
-        "args": [],                    // main() function's argments to run
+        "name": "fortune_teller",    // just a name to manage modules
+        "enabled": true,             // if this module is enabled
+        "module": "fortune",         // the module name (file name)
+        "args": [],                  // main() function's argments to run
         "webhook": "https://discord.com/api/webhooks/YOUR_WEBHOOK_URL"   // discord webhook url
     }
 ]
