@@ -33,11 +33,6 @@ while True:
     now = datetime.datetime.now()
     timeStr = now.isoformat(" ", timespec="seconds")
 
-    if 23 <= now.hour or now.hour <= 6:
-        print(f'it\'s night now... {timeStr}', end="\r")
-        sleep(600)
-        continue
-
     for m in modules:
 
         module = import_module("module." + m["module"])
