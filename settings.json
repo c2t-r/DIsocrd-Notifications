@@ -1,0 +1,9 @@
+[
+    {
+        "name": "manwaka_3",
+        "enabled": true,
+        "module": "manga_fgo3",
+        "args": [],
+        "webhook": "https://discord.com/api/webhooks/YOUR_WEBHOOK_URL"
+    }
+]
