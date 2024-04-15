@@ -1,5 +1,5 @@
-import requests
 from random import random
+from .util import requests
 from . import util
 
 suffixes = ["th", "st", "nd", "rd", "th", "th", "th", "th", "th", "th"]
@@ -14,16 +14,16 @@ async def main() -> tuple[bool, list[dict]]:
     obj = response.json()
     day = obj["day_of_year"]
 
-    data = util.load(name)
-    if not data:
-        data = {"latest": 0}
-        util.save(name, data)
+    saved_data = util.load(name)
+    if not saved_data:
+        saved_data = {"latest": 0}
+        util.save(name, saved_data)
 
-    if day == data["latest"]:
+    if day == saved_data["latest"]:
         return False, None
 
-    data["latest"] = day
-    util.save(name, data)
+    saved_data["latest"] = day
+    util.save(name, saved_data)
 
     if random() > 0.7: # 30% lucky
         luck = "lucky!"
@@ -34,7 +34,7 @@ async def main() -> tuple[bool, list[dict]]:
 
     suffix = suffixes[int(str(day)[-1])]
 
-    data = {
+    content = {
         "username": "certain fortune teller",
         "avatar_url": "https://i.imgur.com/w44p22m.png", # sorry for use
         "embeds": [
@@ -47,4 +47,4 @@ async def main() -> tuple[bool, list[dict]]:
         ]
     }
 
-    return True, [data]
+    return True, [content]
