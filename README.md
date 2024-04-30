@@ -20,6 +20,7 @@ note: do not edit `data.json` by yourself. it will be generated automatically.
         "enabled": true,             // if this module is enabled
         "module": "fortune",         // the module name (file name)
         "args": [],                  // main() function's argments to run
+        "cool": 120,                 // cool time (mins)
         "webhook": "https://discord.com/api/webhooks/YOUR_WEBHOOK_URL"   // discord webhook url
     }
 ]

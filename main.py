@@ -19,6 +19,10 @@ def sendDiscord(webhook_url, content: dict):
     return response
 
 def runModule(m: dict):
+    cools[m["name"]] -= 10
+    if cools[m["name"]] > 0: return
+    cools[m["name"]] = (m["cool"] if "cool" in m else 1)*60
+
     module = import_module("module." + m["module"])
     status, content = asyncio.run(module.main(*m["args"]))
 
@@ -39,6 +43,7 @@ else:
 with open("settings.json", "r") as f:
     settings = json.load(f)
     modules = [i for i in settings if i["enabled"]]
+    cools = {i["name"]: 0 for i in modules}
     if not modules:
         print("no module enabled, bye")
         exit()
