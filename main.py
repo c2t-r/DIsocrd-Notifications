@@ -19,10 +19,6 @@ def sendDiscord(webhook_url, content: dict):
     return response
 
 def runModule(m: dict):
-    cools[m["name"]] -= 10
-    if cools[m["name"]] > 0: return
-    cools[m["name"]] = (m["cool"] if "cool" in m else 1)*60
-
     module = import_module("module." + m["module"])
     status, content = asyncio.run(module.main(*m["args"]))
 
@@ -59,6 +55,10 @@ while True:
     future_list = []
     with futures.ThreadPoolExecutor(max_workers=5) as executor:
         for m in modules:
+            cools[m["name"]] -= 10
+            if cools[m["name"]] > 0: continue
+            cools[m["name"]] = (m["cool"] if "cool" in m else 1)*60
+
             future = executor.submit(runModule, m)
             future_list.append(future)
         _ = futures.as_completed(future_list)
